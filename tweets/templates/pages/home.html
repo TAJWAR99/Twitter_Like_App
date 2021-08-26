@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block head_title %}
+Tweeter
+{% endblock %}
+
+{%block content%}
+<div class="row text-center">
+    <div class="col">
+        <h1>Welcome to Tweetme2</h1>
+    </div>
+</div>
+<div class='row mb-3'>
+    <div class='col-md-4 col-10 mx-auto'>
+        <form class='form' method='POST' action='create-tweet/'>
+        {% csrf_token %}
+        <input type='hidden' value='/' name='next'/>
+        <textarea class='form-control' name='content'></textarea>
+        <br>
+        <button class='btn btn-primary' type='submit'>Tweet</button>
+        </form>
+    </div>
+</div>
+<div class="row" id="tweets"></div>
+
+<script>
+const tweetElement = document.getElementById("tweets")
+
+function handleDidLike(tweet_id,currentCount){
+    console.log(tweet_id,currentCount)
+}
+function LikeBtn(tweet){
+    return "<button class='btn btn-primary btn-sm' onclick=handleDidLike("+tweet.id+","+tweet.likes+")>"+tweet.likes+" Like</button>"
+}
+function formatTweetElement(tweet){
+    var formatedTweet = "<div class='col-12 col-md-10 mx-auto  border py-3 mb-4' tweet id='tweet-"+tweet.id+"'>"+"</p>"+tweet.content+
+    "</p>"+"<div class='btn-group'>"+LikeBtn(tweet)+"</div></div>"
+    return formatedTweet
+}
+{% comment %} tweetElement.innerHTML = "loading"  {% endcomment %}
+/*
+var el1 = "<h1>Heading 1<h1>"
+var el2 = "<h1>Heading 2<h1>"
+var el3 = "<h1>Heading 3<h1>"
+
+tweetElement.innerHTML = el1 + el2 + el3 */
+
+const xhr = new XMLHttpRequest()
+const method = 'GET'
+const url = "tweets"
+const responseType = "json"
+
+xhr.responseType = responseType
+xhr.open(method,url)
+xhr.onload = function(){
+    const listedItems = (xhr.response).response
+    var finalTweetStr = ""
+    for(var i = 0; i < listedItems.length; i++){
+        var currentItem = formatTweetElement(listedItems[i])
+        finalTweetStr += currentItem
+    }
+    tweetElement.innerHTML = finalTweetStr
+}
+xhr.send()
+</script>
+
+{% endblock content %}
