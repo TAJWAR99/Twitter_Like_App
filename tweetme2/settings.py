@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(o$#&($u7ev#)1hus$#(m3h+2viiwz+ew)))r7z_90tm2h!ou=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tajwar99-twitter-app.herokuapp.com','127.0.0.1']
 
 
 # Application definition
